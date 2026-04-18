@@ -7,17 +7,20 @@
  * to an agent that's already running.
  *
  * What this script does:
- *   1. Generates an Ed25519 keypair (required -- standard Hedera wallets use ECDSA,
- *      which is NOT compatible with Fixatum DIDs)
- *   2. Shows you the exact payment to send
+ *   1. Generates an Ed25519 keypair locally (nothing sent on-chain)
+ *   2. Prints the exact payment you need to send
  *   3. Gives you the exact .env values to paste when your DID arrives
  *
- * Nothing is sent on-chain by this script. You make the payment yourself.
+ * IMPORTANT: This script does NOT send any transaction or touch any wallet.
+ * The payment in Step 1 below must be sent by you, manually, from your
+ * own Hedera account. No on-chain action happens without your explicit approval.
  */
 
 import { generateKeyPairSync } from "crypto";
 
 // -- Ed25519 keypair generation -----------------------------------------------
+// Standard Hedera wallets use ECDSA. Fixatum DIDs require Ed25519.
+// They are not interchangeable -- this generates the correct key type.
 
 function base58Encode(buffer) {
   const ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -71,22 +74,26 @@ ${"=".repeat(60)}
   Fixatum DID Registration
 ${"=".repeat(60)}
 
-Your Ed25519 keypair has been generated.
-Save the private key securely -- it cannot be recovered.
+Your Ed25519 keypair has been generated locally.
+Nothing has been sent on-chain. Read all steps before doing anything.
 
   Public key (multibase):  ${publicKeyMultibase}
   Private key (hex):       ${privateKeyHex}
 
+  SAVE YOUR PRIVATE KEY NOW. It is not stored anywhere.
+  If you lose it you cannot prove ownership of this DID.
+
 ${"─".repeat(60)}
-  Step 1: Send payment
+  Step 1: YOU send the payment (manual action required)
 ${"─".repeat(60)}
 
   To:     0.0.10394452   (Fixatum wallet)
-  Amount: 100 HBAR       (exact)
+  Amount: 100 HBAR       (exact -- not more, not less for clean records)
   Memo:   ${publicKeyMultibase}
 
-  Send from your agent's Hedera account: ${accountId}
-  The memo must be exactly the public key string above -- nothing else.
+  Send from: ${accountId}
+  The memo must be exactly the public key above -- nothing else.
+  Payment is non-refundable. Verify the address at fixatum.com before sending.
 
   Do NOT close this window until you have saved your private key.
 
@@ -94,12 +101,12 @@ ${"─".repeat(60)}
   Step 2: Wait for confirmation (~30 seconds)
 ${"─".repeat(60)}
 
-  Once the watcher picks up your payment:
+  Once your payment is detected:
     - Your DID is issued
     - A dedicated HCS topic is created for your agent
     - A genesis record is written to that topic
 
-  Check registration status:
+  Check status:
     https://did.fixatum.com/did/${accountId}
 
 ${"─".repeat(60)}
@@ -111,18 +118,12 @@ ${"─".repeat(60)}
   AGENT_DID=did:hedera:mainnet:${publicKeyMultibase}_${accountId}
   AGENT_HCS_TOPIC=<topic_id from did.fixatum.com/did/${accountId}>
 
-  The AGENT_HCS_TOPIC value will be visible in the /did/ response
-  once registration is complete.
-
 ${"─".repeat(60)}
   Already running?
 ${"─".repeat(60)}
 
-  Your agent will start writing HCS records automatically on the
-  next cycle after you update .env and restart.
-
-  No code changes needed -- hcs.js and fixatum.js read AGENT_DID
-  and AGENT_HCS_TOPIC on every cycle.
+  Update .env and restart. Your agent switches over automatically.
+  No code changes needed.
 
 ${"=".repeat(60)}
 `);
