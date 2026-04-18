@@ -1,0 +1,18 @@
+{
+  "name": "hedera-agent-starter",
+  "version": "1.0.0",
+  "description": "A minimal, production-ready scaffold for building accountable agents on Hedera.",
+  "type": "module",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "register": "node scripts/register.js",
+    "start": "node src/agent.js"
+  },
+  "dependencies": {
+    "node-cron": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "license": "MIT"
+}
