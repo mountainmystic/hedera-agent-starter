@@ -113,7 +113,7 @@ Full tool list and pricing: [hederatoolbox.com](https://hederatoolbox.com)
 
 ---
 
-## Fixatum DID registration
+## Fixatum DID registration (optional)
 
 **Cost:** 100 HBAR (one-time, non-refundable)
 
