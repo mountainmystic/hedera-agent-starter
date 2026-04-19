@@ -109,6 +109,8 @@ Open `src/agent.js` and find Step 2:
 
 Every paid Toolbox call generates provenance that feeds your Fixatum score.
 
+> **⚠️ Note on `identity_check_sanctions` (1.0 HBAR/call):** Cache the result — do not call this on every cycle or every score query. Refresh at most once per 24 hours. Calling it in a loop will drain your balance rapidly.
+
 Full tool list and pricing: [hederatoolbox.com](https://hederatoolbox.com)
 
 ---

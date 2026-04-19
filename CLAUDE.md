@@ -80,6 +80,12 @@ Free (no balance needed):
   hcs_understand      -- anomaly detection, trends, risk assessment on a topic
   hcs_verify_record   -- verify a record has not been tampered with
   identity_check_sanctions -- on-chain risk signals and behavioural screening
+                             ⚠️  HIGH COST WARNING: 1.0 HBAR per call. Do NOT call
+                             this on every cycle or every score query. Cache the
+                             result and refresh at most once per 24 hours. Suitable
+                             for one-time screening at registration, or on a long
+                             interval. Calling this in a tight loop will drain your
+                             Toolbox balance rapidly.
   governance_analyze  -- voter sentiment, participation, outcome prediction
   contract_call       -- read-only contract function call
 
